@@ -2,8 +2,6 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { CellAction } from '@/app/(dashboard)/[storeId]/(routes)/products/_components/cell-action'
-import { formatter } from '@/lib/utils'
-import { format } from 'date-fns'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import db from '@/lib/prismadb'
 
-export async function GTE(
+export async function GET(
   req: Request,
   { params }: { params: { productId: string } }
 ) {
