@@ -71,8 +71,8 @@ export async function POST(
     phone_number_collection: {
       enabled: true
     },
-    success_url: 'http://localhost:3001/checkout?success=1', // 返回的URL 在这个页面获取地址中的success
-    cancel_url: 'http://localhost:3001/checkout?cancel=1',
+    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
+    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?cancel=1`,
     metadata: {
       orderId: order.id
     }
