@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import db from '@/lib/prismadb'
 import { Heading } from '@/components/ui/heading'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
