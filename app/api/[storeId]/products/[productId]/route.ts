@@ -66,7 +66,7 @@ export async function PATCH(
     if (!params.productId)
       return new NextResponse('Store id is required', { status: 400 })
 
-    const storeByUserId = await prisma?.store.findFirst({
+    const storeByUserId = await db?.store.findFirst({
       where: {
         id: params.storeId,
         userId
@@ -127,7 +127,7 @@ export async function DELETE(
     if (!params.productId)
       return new NextResponse('product id is required', { status: 400 })
 
-    const storeByUserId = await prisma?.store.findFirst({
+    const storeByUserId = await db?.store.findFirst({
       where: {
         id: params.storeId,
         userId
