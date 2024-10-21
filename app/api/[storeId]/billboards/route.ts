@@ -42,8 +42,12 @@ export async function POST(
     })
 
     return NextResponse.json(billboard)
-  } catch (e) {
+  } catch (e: any) {
     console.log(`[Billboards_post]`, e)
+    return NextResponse.json(
+      { success: false, error: e.message },
+      { status: 500 }
+    )
   }
 }
 
