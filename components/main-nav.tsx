@@ -16,6 +16,21 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
       active: pathname === `/${params.storeId}`
     },
     {
+      href: `/${params.storeId}/navs`,
+      label: 'Navs',
+      active: pathname === `/${params.storeId}/navs`
+    },
+    {
+      href: `/${params.storeId}/nav2s`,
+      label: 'Navs_2',
+      active: pathname === `/${params.storeId}/nav2s`
+    },
+    {
+      href: `/${params.storeId}/nav3s`,
+      label: 'Navs_3',
+      active: pathname === `/${params.storeId}/nav3s`
+    },
+    {
       href: `/${params.storeId}/billboards`,
       label: 'Billboards',
       active: pathname === `/${params.storeId}/billboards`

@@ -7,13 +7,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Store {
-  id        String   @id @default(uuid())
-  name      String
-  userId    String
-  createAt  DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Nav1 {
+  id              String   @id @default(uuid()) // 使用UUID作为ID
+  name_ch         String
+  can_has_sub_nav Boolean?
+  name_en         String?
+  link            String? // optional link
+  disable         Boolean? @default(false)
+  nav_2           Nav2[] // One-to-many relationship with Nav2
+}
 
+model Nav2 {
+  id             String   @id @default(uuid()) // 使用UUID作为ID
+  name_ch        String
+  name_en        String?
+  disable        Boolean? @default(false)
+  description_ch String
+  description_en String?
+  nav_3          Nav3[] // One-to-many relationship with Nav3
+  nav1Id         String
+  nav1           Nav1     @relation(fields: [nav1Id], references: [id], onDelete: Cascade)
+}
+
+model Nav3 {
+  id      String   @id @default(uuid()) // 使用UUID作为ID
+  name_ch String
+  name_en String?
+  link    String? // optional link
+  disable Boolean? @default(false)
+  nav2Id  String
+  nav2    Nav2     @relation(fields: [nav2Id], references: [id], onDelete: Cascade)
+}
+
+model Store {
+  id         String      @id @default(uuid())
+  name       String
+  userId     String
+  createAt   DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
   billboards Billboard[] @relation("StoreToBillboard")
   categories Category[]  @relation("StoreToCategory")
   size       Size[]      @relation("StoreToSize")
