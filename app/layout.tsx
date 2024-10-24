@@ -5,6 +5,8 @@ import React from 'react'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ModalProvider } from '@/providers/modal-provider'
 import { ToastProvider } from '@/providers/toast-provider'
+import {auth} from "@clerk/nextjs/server";
+import {redirect} from "next/navigation";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,6 +20,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { userId } = auth()
+
+  if (!userId) {
+    redirect('/sign-in')
+  }
   return (
     <ClerkProvider afterSignOutUrl={'/'}>
       <html lang="en">
