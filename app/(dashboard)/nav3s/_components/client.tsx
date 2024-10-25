@@ -3,7 +3,7 @@ import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { DataTable } from '@/components/ui/data-table'
 import { Nav3 } from '@prisma/client'
 import {columns} from "@/app/(dashboard)/nav3s/_components/columns";
@@ -13,7 +13,6 @@ export const Nav3Client = ({
 }: {
   data: (Nav3 & { nav2: { name_ch: string } })[]
 }) => {
-  const params = useParams()
   const router = useRouter()
   return (
     <>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Nav1, Size } from '@prisma/client'
+import { Nav1 } from '@prisma/client'
 import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
