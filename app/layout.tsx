@@ -7,6 +7,7 @@ import { ModalProvider } from '@/providers/modal-provider'
 import { ToastProvider } from '@/providers/toast-provider'
 import {auth} from "@clerk/nextjs/server";
 import {redirect} from "next/navigation";
+import Navbar from "@/components/navbar";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <ToastProvider />
           <ModalProvider />
+          <Navbar />
           {children}
         </body>
       </html>

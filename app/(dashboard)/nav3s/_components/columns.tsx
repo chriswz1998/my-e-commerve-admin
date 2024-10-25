@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Nav3 } from '@prisma/client'
-import { CellAction } from '@/app/(dashboard)/[storeId]/(routes)/nav3s/_components/cell-action'
+import {CellAction} from "@/app/(dashboard)/nav3s/_components/cell-action";
 
 export const columns: ColumnDef<Nav3 & { nav2: { name_ch: string } }>[] = [
   {

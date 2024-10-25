@@ -1,5 +1,5 @@
 import db from '@/lib/prismadb'
-import { Nav2Form } from '@/app/(dashboard)/[storeId]/(routes)/nav2s/[nav2Id]/_components/nav2-form'
+import {Nav2Form} from "@/app/(dashboard)/nav2s/[nav2Id]/_components/nav2-form";
 
 const Nav2Page = async ({ params }: { params: { nav2Id: string } }) => {
   const nav2 = await db.nav2.findUnique({

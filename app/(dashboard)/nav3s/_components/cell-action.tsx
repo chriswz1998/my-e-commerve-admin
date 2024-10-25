@@ -53,7 +53,7 @@ export const CellAction = ({ data }: { data: Nav3 }) => {
         <DropdownMenuContent align={'end'}>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => route.push(`/${params.storeId}/nav3s/${data.id}`)}
+            onClick={() => route.push(`/nav3s/${data.id}`)}
           >
             <Edit className={'mr-2 w-4 h-4'} /> Update
           </DropdownMenuItem>

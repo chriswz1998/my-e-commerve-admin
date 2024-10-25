@@ -69,7 +69,7 @@ export const Nav1Form = ({ initialData }: Nav1FormProps) => {
       } else {
         await axios.post(`/api/nav`, data)
       }
-      route.push(`/${params.storeId}/navs`)
+      route.push(`/navs`)
       route.refresh()
       toast.success(toastMessage)
     } catch (e) {
@@ -83,7 +83,7 @@ export const Nav1Form = ({ initialData }: Nav1FormProps) => {
     try {
       setLoading(true)
       await axios.delete(`/api/nav/${params.navId}`)
-      route.push(`/${params.storeId}/navs`)
+      route.push(`/navs`)
       route.refresh()
       toast.success('nav successfully deleted')
     } catch (e) {

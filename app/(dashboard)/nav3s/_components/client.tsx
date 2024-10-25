@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/ui/data-table'
 import { Nav3 } from '@prisma/client'
-import { columns } from '@/app/(dashboard)/[storeId]/(routes)/nav3s/_components/columns'
+import {columns} from "@/app/(dashboard)/nav3s/_components/columns";
 
 export const Nav3Client = ({
   data
@@ -22,7 +22,7 @@ export const Nav3Client = ({
           title={`Nav_3 (${data.length})`}
           description={'manage nav for your website'}
         />
-        <Button onClick={() => router.push(`/${params.storeId}/nav3s/new`)}>
+        <Button onClick={() => router.push(`/nav3s/new`)}>
           <Plus className={'w-4 h-4 mr-2'} />
           Add New
         </Button>

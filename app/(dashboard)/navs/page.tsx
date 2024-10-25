@@ -1,5 +1,5 @@
 import db from '@/lib/prismadb'
-import { Nav1Client } from '@/app/(dashboard)/[storeId]/(routes)/navs/_components/client'
+import {Nav1Client} from "@/app/(dashboard)/navs/_components/client";
 
 const NavsPage = async () => {
   const nav1 = await db.nav1.findMany()

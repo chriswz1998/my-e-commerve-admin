@@ -8,7 +8,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Edit, MoreHorizontal, Trash } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { useState } from 'react'
 import { AlertModal } from '@/components/modals/alert-modal'
@@ -16,7 +16,6 @@ import { Nav1 } from '@prisma/client'
 
 export const CellAction = ({ data }: { data: Nav1 }) => {
   const route = useRouter()
-  const params = useParams()
 
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
@@ -53,7 +52,7 @@ export const CellAction = ({ data }: { data: Nav1 }) => {
         <DropdownMenuContent align={'end'}>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => route.push(`/${params.storeId}/navs/${data.id}`)}
+            onClick={() => route.push(`/navs/${data.id}`)}
           >
             <Edit className={'mr-2 w-4 h-4'} /> Update
           </DropdownMenuItem>
