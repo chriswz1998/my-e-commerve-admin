@@ -30,6 +30,11 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
       active: pathname === `/nav3s`
     },
     {
+      href: `/contents`,
+      label: 'Contents',
+      active: pathname === `/contents`
+    },
+    {
       href: `/billboards`,
       label: 'Billboards',
       active: pathname === `/billboards`

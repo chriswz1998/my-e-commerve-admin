@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { useRouter } from 'next/navigation'
 import { DataTable } from '@/components/ui/data-table'
 import { Nav3 } from '@prisma/client'
-import {columns} from "@/app/(dashboard)/nav3s/_components/columns";
+import { columns } from '@/app/(dashboard)/nav3s/_components/columns'
 
 export const Nav3Client = ({
   data
@@ -18,7 +18,7 @@ export const Nav3Client = ({
     <>
       <div className={'flex items-center justify-between'}>
         <Heading
-          title={`Nav_3 (${data.length})`}
+          title={`Nav_4 (${data.length})`}
           description={'manage nav for your website'}
         />
         <Button onClick={() => router.push(`/nav3s/new`)}>

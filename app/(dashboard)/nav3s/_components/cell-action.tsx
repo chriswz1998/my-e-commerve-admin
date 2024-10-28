@@ -51,9 +51,7 @@ export const CellAction = ({ data }: { data: Nav3 }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align={'end'}>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => route.push(`/nav3s/${data.id}`)}
-          >
+          <DropdownMenuItem onClick={() => route.push(`/nav3s/${data.id}`)}>
             <Edit className={'mr-2 w-4 h-4'} /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>

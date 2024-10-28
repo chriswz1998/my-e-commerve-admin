@@ -15,7 +15,7 @@ export async function POST(req: Request) {
       return new NextResponse('f_nav id is required', { status: 400 })
     if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
-    const nav2 = await db.nav2.createMany({
+    const nav3 = await db.nav3.createMany({
       data: {
         name_ch,
         name_en,
@@ -25,8 +25,8 @@ export async function POST(req: Request) {
       }
     })
 
-    return NextResponse.json(nav2)
+    return NextResponse.json(nav3)
   } catch (e) {
-    console.log(`[nav1_post]`, e)
+    console.log(`[nav3_post]`, e)
   }
 }
