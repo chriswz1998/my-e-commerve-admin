@@ -8,8 +8,10 @@ const DetailPage = async ({ params }: { params: { detailId: string } }) => {
     }
   })
   return (
-    <div className={'p-6'}>
-      <DetailForm initialData={contentItem} />
+    <div className={'flex-col'}>
+      <div className={'p-6 space-y-6'}>
+        <DetailForm initialData={contentItem} />
+      </div>
     </div>
   )
 }
