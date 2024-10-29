@@ -1,9 +1,9 @@
 'use client'
 
-import { Content, ContentItem } from '@prisma/client'
+import { ContentItem } from '@prisma/client'
 import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -22,58 +22,56 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation'
 import { AlertModal } from '@/components/modals/alert-modal'
-import ImageUpload from '@/components/ui/image-upload'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { DataAction } from '@/app/(dashboard)/contents/[contentId]/_components/detail-action'
-
-interface ContentProps {
-  initialData: Content | null
-  detailsData: ContentItem[] | null
-}
+import UEditorComponent from '@/components/u-editor'
 
 const formSchema = z.object({
   title_ch: z.string().min(1),
   title_en: z.string().optional(),
-  image_url: z.string().min(1),
   desc_ch: z.string().min(1),
-  desc_en: z.string().optional()
+  desc_en: z.string().optional(),
+  detail: z.string().min(1),
+  contentId: z.string().min(1)
 })
 
-type ContentFormValues = z.infer<typeof formSchema>
+type DetailFormValues = z.infer<typeof formSchema>
 
-export const ContentForm = ({ initialData, detailsData }: ContentProps) => {
+const DetailForm = ({ data }: { data: ContentItem }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const params = useParams()
   const route = useRouter()
 
-  const title = initialData ? 'Edit content' : 'Create content'
-  const description = initialData ? 'Edit content' : 'Add a new content'
-  const toastMessage = initialData ? 'content updated.' : 'content Created.'
-  const action = initialData ? 'Save changes' : 'Create'
-  const sub_title = detailsData ? 'Edit details' : 'Create details'
-  const sub_description = detailsData ? 'Edit details' : 'Add a new details'
+  const title = data ? 'Edit detail' : 'Create detail'
+  const description = data ? 'Edit detail' : 'Add a new detail'
+  const toastMessage = data ? 'detail updated.' : 'detail Created.'
+  const action = data ? 'Save changes' : 'Create'
 
-  const form = useForm<ContentFormValues>({
+  const form = useForm<DetailFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title_ch: initialData?.title_ch ?? '', // 如果是null或undefined，设置为空字符串
-      title_en: initialData?.title_en ?? '', // 如果是null或undefined，设置为空字符串
-      image_url: initialData?.image_url ?? '', // 如果是null或undefined，设置为false
-      desc_ch: initialData?.desc_ch ?? '', // 如果是null或undefined，设置为false
-      desc_en: initialData?.desc_en ?? '' // 如果是null或undefined，设置为false
+      title_ch: data?.title_ch ?? '', // 如果是null或undefined，设置为空字符串
+      title_en: data?.title_en ?? '', // 如果是null或undefined，设置为空字符串
+      desc_ch: data?.desc_ch ?? '', // 如果是null或undefined，设置为false
+      desc_en: data?.desc_en ?? '',
+      detail: data?.detail ?? ''
     }
   })
 
-  const onSubmit = async (data: ContentFormValues) => {
+  const onSubmit = async (values: DetailFormValues) => {
     try {
       setLoading(true)
-      if (initialData) {
-        await axios.patch(`/api/contents/${params.contentId}`, data)
+
+      if (values) {
+        await axios.patch(
+          `/api/contents/${params.contentId}/content-items/${params.detailId}`,
+          {
+            data: values
+          }
+        )
       } else {
-        await axios.post(`/api/contents`, data)
+        await axios.post(`/api/content-items`, { data: values })
       }
-      route.push(`/contents`)
+      route.push(`/contents/${params.contentId}`)
       route.refresh()
       toast.success(toastMessage)
     } catch (e) {
@@ -86,8 +84,10 @@ export const ContentForm = ({ initialData, detailsData }: ContentProps) => {
   const onDelete = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/contents/${params.contentId}`)
-      route.push(`/contents`)
+      await axios.delete(
+        `/api/contents/${params.contentId}/content-items/${params.detailId}`
+      )
+      route.push(`/contents/${params.contentId}`)
       route.refresh()
       toast.success('nav successfully deleted')
     } catch (e) {
@@ -99,7 +99,7 @@ export const ContentForm = ({ initialData, detailsData }: ContentProps) => {
   }
 
   return (
-    <div className={'space-y-6'}>
+    <div className={'p-6 space-y-6'}>
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
@@ -108,7 +108,7 @@ export const ContentForm = ({ initialData, detailsData }: ContentProps) => {
       />
       <div className={'flex items-center justify-between'}>
         <Heading title={title} description={description} />
-        {initialData && (
+        {data && (
           <Button
             disabled={loading}
             variant={'destructive'}
@@ -125,24 +125,6 @@ export const ContentForm = ({ initialData, detailsData }: ContentProps) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
-          <FormField
-            control={form.control}
-            name="image_url"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Background image</FormLabel>
-                <FormControl>
-                  <ImageUpload
-                    value={field.value ? [field.value] : []}
-                    disabled={loading}
-                    onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange('')}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className={'grid grid-cols-3 gap-8'}>
             <FormField
               control={form.control}
@@ -213,38 +195,35 @@ export const ContentForm = ({ initialData, detailsData }: ContentProps) => {
               )}
             />
           </div>
+          <Separator />
+          <Separator />
+          <div className={'flex flex-col items-center'}>
+            <h1 className={'pb-6 font-semibold'}>Edit Content Detail</h1>
+            <h2 className={'pb-6 font-medium text-red-500'}>
+              if the detail didn&#39;t show the image, please click the replace
+              image url button.
+            </h2>
+            <FormField
+              control={form.control}
+              name="detail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Put your need write</FormLabel>
+                  <FormControl>
+                    <UEditorComponent {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Separator />
           <Button type="submit" className={'ml-auto'} disabled={loading}>
             {action}
           </Button>
         </form>
       </Form>
-      <div className={'flex items-center justify-between pt-10'}>
-        <Heading title={sub_title} description={sub_description} />
-        <Button onClick={() => route.push(`/contents/${params.contentId}/new`)}>
-          <Plus className={'w-4 h-4 mr-2'} />
-          Add New
-        </Button>
-      </div>
-      <Separator />
-      <div className={'grid gap-4 grid-cols-5'}>
-        {detailsData?.map((item) => (
-          <Card key={item.id}>
-            <CardHeader
-              className={
-                'flex flex-row items-center justify-between space-y-0 pb-2'
-              }
-            >
-              <CardTitle className={'text-sm font-medium'}>
-                {item.desc_ch}
-              </CardTitle>
-              <DataAction data={item} />
-            </CardHeader>
-            <CardContent>
-              <div className={'text-2xl font-bold'}> {item.title_ch}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
     </div>
   )
 }
+export default DetailForm

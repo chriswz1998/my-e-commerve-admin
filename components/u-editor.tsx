@@ -2,9 +2,14 @@ import { useEffect, useRef } from 'react'
 import Script from 'next/script'
 import { Button } from '@/components/ui/button'
 
-const UEditorComponent = () => {
-  const editorInstance = useRef(null)
-  // Cloudinary 配置
+interface UEditorComponentProps {
+  onChange: (value: string) => void
+  value: string
+}
+
+const UEditorComponent = ({ onChange, value }: UEditorComponentProps) => {
+  const editorInstance = useRef<any>(null)
+  // Cloudinary configuration
   const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
   const UPLOAD_PRESET = 'ecommerce'
 
@@ -18,8 +23,20 @@ const UEditorComponent = () => {
         scriptPlugin.src = '/utf8-php/135editor.js'
         scriptPlugin.async = true
         scriptPlugin.onload = () => {
-          // 初始化编辑器并将实例保存到 ref 中
+          // Initialize editor and set ref
           editorInstance.current = window.UE.getEditor('editor')
+
+          // Set initial value once editor is ready
+          editorInstance.current?.ready(() => {
+            editorInstance.current?.setContent(value)
+
+            // Add content change listener
+            editorInstance.current?.addListener('contentChange', () => {
+              // Call onChange with current content
+              const content = editorInstance.current?.getContent()
+              onChange(content)
+            })
+          })
         }
         document.body.appendChild(scriptPlugin)
       }
@@ -27,50 +44,41 @@ const UEditorComponent = () => {
       document.body.appendChild(scriptEditor)
 
       return () => {
-        // 卸载组件时清理脚本
+        // Clean up scripts on unmount
         document.body.removeChild(scriptEditor)
       }
     }
-  }, [])
+  }, [value, onChange])
 
   const handleContentChange = () => {
     if (!editorInstance.current) return
-    // @ts-ignore
     const content = editorInstance.current.getContent()
 
-    // 提取内容中的图片链接
     const imageUrls = [
       ...content.matchAll(/<img[^>]*src=["']([^"']+)["']/g)
     ].map((match) => match[1])
 
-    // 如果存在图片链接，上传到 Cloudinary
     if (imageUrls.length > 0) {
       uploadImagesToCloudinary(imageUrls)
         .then((newUrls) => {
-          // 替换编辑器内容中的原始链接为 Cloudinary 新链接
           let updatedContent = content
           imageUrls.forEach((url, index) => {
             updatedContent = updatedContent.replace(url, newUrls[index])
           })
-          // @ts-ignore
           editorInstance?.current?.setContent(updatedContent)
         })
         .catch((error) => {
-          console.error('图片上传失败:', error)
+          console.error('Image upload failed:', error)
         })
     }
   }
 
-  // 上传图片到 Cloudinary
   const uploadImagesToCloudinary = async (imageUrls: any[]) => {
-    // 使用 Promise.all 处理多个图片链接的上传
     const uploadPromises = imageUrls.map(async (url) => {
       const formData = new FormData()
-      formData.append('file', url) // 图片链接
-      // @ts-ignore
-      formData.append('upload_preset', UPLOAD_PRESET) // Cloudinary 上传预设
+      formData.append('file', url)
+      formData.append('upload_preset', UPLOAD_PRESET)
 
-      // 发送上传请求到 Cloudinary
       const response = await fetch(CLOUDINARY_URL, {
         method: 'POST',
         body: formData
@@ -78,25 +86,22 @@ const UEditorComponent = () => {
 
       const data = await response.json()
       if (data.url) {
-        return data.url // 返回 Cloudinary 上的新图片 URL
+        return data.url
       } else {
-        throw new Error('上传到 Cloudinary 失败')
+        throw new Error('Upload to Cloudinary failed')
       }
     })
 
-    // 等待所有上传完成并返回新链接数组
     return await Promise.all(uploadPromises)
   }
 
-  // 获取编辑器内容
   const getEditorContent = () => {
     if (editorInstance.current) {
-      // @ts-ignore
       const content = editorInstance.current.getContent()
-      console.log('编辑器内容:', content)
+      console.log('Editor content:', content)
       return content
     } else {
-      console.warn('编辑器尚未初始化')
+      console.warn('Editor is not initialized yet')
       return null
     }
   }
@@ -109,8 +114,13 @@ const UEditorComponent = () => {
         className={'max-w-4xl mx-auto border-l border-r border-b'}
         style={{ width: '100%', height: '400px' }}
       ></div>
-      <Button onClick={() => console.log(getEditorContent())}>获取内容</Button>
-      <Button onClick={handleContentChange}>替换图片链接</Button>
+      <Button
+        onClick={handleContentChange}
+        variant={'destructive'}
+        className={'mt-6'}
+      >
+        Replace Image Links
+      </Button>
     </div>
   )
 }

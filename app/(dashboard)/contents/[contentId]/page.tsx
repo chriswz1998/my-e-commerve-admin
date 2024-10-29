@@ -8,10 +8,21 @@ const ContentPage = async ({ params }: { params: { contentId: string } }) => {
     }
   })
 
+  const contentItems = await db.contentItem.findMany({
+    where: {
+      contentId: params.contentId
+    },
+    select: {
+      id: true,
+      title_ch: true,
+      desc_ch: true
+    }
+  })
+
   return (
     <div className={'flex-col'}>
       <div className={'p-6 space-y-6'}>
-        <ContentForm initialData={content} />
+        <ContentForm initialData={content} detailsData={contentItems} />
       </div>
     </div>
   )
