@@ -39,6 +39,34 @@ model Nav3 {
   nav2    Nav2     @relation(fields: [nav2Id], references: [id], onDelete: Cascade)
 }
 
+model Content {
+  id           String        @id @default(uuid()) // 使用 UUID 作为字符串主键
+  title_ch     String
+  title_en     String
+  image_url    String
+  desc_ch      String
+  desc_en      String
+  content_item ContentItem[] // 建立一对多关系，引用 ContentItem
+
+  // 创建记录时间
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContentItem {
+  id        String  @id @default(uuid()) // 使用 UUID 作为字符串主键
+  title_ch  String
+  title_en  String
+  desc_ch   String
+  desc_en   String
+  detail    String  @db.Text
+  contentId String // 外键，关联 Content 的 id
+  content   Content @relation(fields: [contentId], references: [id]) // 关系字段
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Store {
   id         String      @id @default(uuid())
   name       String
