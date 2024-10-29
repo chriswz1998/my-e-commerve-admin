@@ -1,4 +1,4 @@
-import { BillboardColum } from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/columns'
+import { BillboardColum } from '@/app/(dashboard)/billboards/_components/columns'
 import {
   DropdownMenu,
   DropdownMenuContent,

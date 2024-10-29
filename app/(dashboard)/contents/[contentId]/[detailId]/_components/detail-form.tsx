@@ -3,7 +3,7 @@
 import { ContentItem } from '@prisma/client'
 import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
-import { Trash } from 'lucide-react'
+import { Plus, Trash } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -22,54 +22,57 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 import { useParams, useRouter } from 'next/navigation'
 import { AlertModal } from '@/components/modals/alert-modal'
+import ImageUpload from '@/components/ui/image-upload'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { DataAction } from '@/app/(dashboard)/contents/[contentId]/_components/detail-action'
 import UEditorComponent from '@/components/u-editor'
+
+interface DetailProps {
+  initialData: ContentItem | null
+}
 
 const formSchema = z.object({
   title_ch: z.string().min(1),
   title_en: z.string().optional(),
   desc_ch: z.string().min(1),
   desc_en: z.string().optional(),
-  detail: z.string().min(1),
-  contentId: z.string().min(1)
+  detail: z.string().min(1)
 })
 
 type DetailFormValues = z.infer<typeof formSchema>
 
-const DetailForm = ({ data }: { data: ContentItem }) => {
+export const DetailForm = ({ initialData }: DetailProps) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const params = useParams()
   const route = useRouter()
 
-  const title = data ? 'Edit detail' : 'Create detail'
-  const description = data ? 'Edit detail' : 'Add a new detail'
-  const toastMessage = data ? 'detail updated.' : 'detail Created.'
-  const action = data ? 'Save changes' : 'Create'
+  const title = initialData ? 'Edit detail' : 'Create detail'
+  const description = initialData ? 'Edit detail' : 'Add a new detail'
+  const toastMessage = initialData ? 'Detail updated.' : 'Detail Created.'
+  const action = initialData ? 'Save changes' : 'Create'
 
   const form = useForm<DetailFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title_ch: data?.title_ch ?? '', // 如果是null或undefined，设置为空字符串
-      title_en: data?.title_en ?? '', // 如果是null或undefined，设置为空字符串
-      desc_ch: data?.desc_ch ?? '', // 如果是null或undefined，设置为false
-      desc_en: data?.desc_en ?? '',
-      detail: data?.detail ?? ''
+      title_ch: initialData?.title_ch ?? '', // 如果是null或undefined，设置为空字符串
+      title_en: initialData?.title_en ?? '', // 如果是null或undefined，设置为空字符串
+      desc_ch: initialData?.desc_ch ?? '', // 如果是null或undefined，设置为false
+      desc_en: initialData?.desc_en ?? '',
+      detail: initialData?.detail ?? ''
     }
   })
 
-  const onSubmit = async (values: DetailFormValues) => {
+  const onSubmit = async (data: DetailFormValues) => {
     try {
       setLoading(true)
-
-      if (values) {
+      if (initialData) {
         await axios.patch(
-          `/api/contents/${params.contentId}/content-items/${params.detailId}`,
-          {
-            data: values
-          }
+          `/api/contents/${params.contentId}/content-item/${params.detailId}`,
+          data
         )
       } else {
-        await axios.post(`/api/content-items`, { data: values })
+        await axios.post(`/api/contents/${params.contentId}/content-item`, data)
       }
       route.push(`/contents/${params.contentId}`)
       route.refresh()
@@ -85,11 +88,11 @@ const DetailForm = ({ data }: { data: ContentItem }) => {
     try {
       setLoading(true)
       await axios.delete(
-        `/api/contents/${params.contentId}/content-items/${params.detailId}`
+        `/api/contents/${params.contentId}/content-item/${params.detailId}`
       )
       route.push(`/contents/${params.contentId}`)
       route.refresh()
-      toast.success('nav successfully deleted')
+      toast.success('Detail successfully deleted')
     } catch (e) {
       toast.error('something went wrong.')
     } finally {
@@ -99,7 +102,7 @@ const DetailForm = ({ data }: { data: ContentItem }) => {
   }
 
   return (
-    <div className={'p-6 space-y-6'}>
+    <div className={'space-y-6'}>
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
@@ -108,7 +111,7 @@ const DetailForm = ({ data }: { data: ContentItem }) => {
       />
       <div className={'flex items-center justify-between'}>
         <Heading title={title} description={description} />
-        {data && (
+        {initialData && (
           <Button
             disabled={loading}
             variant={'destructive'}
@@ -196,7 +199,6 @@ const DetailForm = ({ data }: { data: ContentItem }) => {
             />
           </div>
           <Separator />
-          <Separator />
           <div className={'flex flex-col items-center'}>
             <h1 className={'pb-6 font-semibold'}>Edit Content Detail</h1>
             <h2 className={'pb-6 font-medium text-red-500'}>
@@ -226,4 +228,3 @@ const DetailForm = ({ data }: { data: ContentItem }) => {
     </div>
   )
 }
-export default DetailForm

@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation'
 import {
   BillboardColum,
   columns
-} from '@/app/(dashboard)/[storeId]/(routes)/billboards/_components/columns'
+} from '@/app/(dashboard)/billboards/_components/columns'
 import { DataTable } from '@/components/ui/data-table'
 import { ApiList } from '@/components/ui/api-list'
 

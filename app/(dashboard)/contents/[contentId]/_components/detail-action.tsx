@@ -24,7 +24,9 @@ export const DataAction = ({ data }: { data: ContentItem }) => {
   const onDelete = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/content-items/${data.id}`)
+      await axios.delete(
+        `/api/contents/${params.contentId}/content-item/${data.id}`
+      )
       route.refresh()
       toast.success('nav successfully deleted')
     } catch (e) {

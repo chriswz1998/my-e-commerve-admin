@@ -1,14 +1,17 @@
 import db from '@/lib/prismadb'
-import DetailForm from '@/app/(dashboard)/contents/[contentId]/[detailId]/_components/detail-form'
+import { DetailForm } from '@/app/(dashboard)/contents/[contentId]/[detailId]/_components/detail-form'
 
 const DetailPage = async ({ params }: { params: { detailId: string } }) => {
-  const data = await db.contentItem.findUnique({
+  const contentItem = await db.contentItem.findUnique({
     where: {
       id: params.detailId
     }
   })
-
-  return <DetailForm data={data} />
+  return (
+    <div className={'p-6'}>
+      <DetailForm initialData={contentItem} />
+    </div>
+  )
 }
 
 export default DetailPage

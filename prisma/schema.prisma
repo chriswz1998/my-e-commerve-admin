@@ -67,6 +67,27 @@ model ContentItem {
   updatedAt DateTime @updatedAt
 }
 
+model CaseCategory {
+  id    String @id @default(uuid()) // Primary key, UUID format
+  name  String @unique // Category name, unique for each category
+  cases Case[] // One-to-many relationship with Case
+
+  createdAt DateTime @default(now()) // Record creation timestamp
+  updatedAt DateTime @updatedAt // Record update timestamp
+}
+
+model Case {
+  id              String       @id @default(uuid()) // Primary key, UUID format
+  title_ch        String // Title in Chinese
+  title_en        String // Title in English
+  detail          String       @db.Text // Detailed description
+  case_categoryId String // Foreign key for CaseCategory
+  case_category   CaseCategory @relation(fields: [case_categoryId], references: [id])
+
+  createdAt DateTime @default(now()) // Record creation timestamp
+  updatedAt DateTime @updatedAt // Record update timestamp
+}
+
 model Store {
   id         String      @id @default(uuid())
   name       String

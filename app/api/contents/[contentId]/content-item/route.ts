@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server'
 import db from '@/lib/prismadb'
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request,
+  { params }: { params: { contentId: string } }
+) {
   try {
     const body = await req.json()
 
@@ -21,7 +24,8 @@ export async function POST(req: Request) {
         title_en,
         desc_ch,
         desc_en,
-        detail
+        detail,
+        contentId: params.contentId
       }
     })
 
