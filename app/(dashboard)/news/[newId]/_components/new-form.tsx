@@ -1,6 +1,6 @@
 'use client'
 
-import { Case, CaseCategory } from '@prisma/client'
+import { Case, CaseCategory, News, NewsCategory } from '@prisma/client'
 import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
@@ -30,49 +30,49 @@ import {
 } from '@/components/ui/select'
 import UEditorComponent from '@/components/u-editor'
 
-interface CaseProps {
-  initialData: Case | null
-  detailsData: CaseCategory[] | null
+interface NewProps {
+  initialData: News | null
+  detailsData: NewsCategory[] | null
 }
 
 const formSchema = z.object({
   title_ch: z.string().min(1),
   title_en: z.string().optional(),
   detail: z.string().min(1),
-  case_categoryId: z.string().min(1)
+  newsCategoryId: z.string().min(1)
 })
 
-type CaseFormValues = z.infer<typeof formSchema>
+type NewFormValues = z.infer<typeof formSchema>
 
-export const CaseForm = ({ initialData, detailsData }: CaseProps) => {
+export const NewForm = ({ initialData, detailsData }: NewProps) => {
   const [loading, setLoading] = useState(false)
   const params = useParams()
   const route = useRouter()
 
-  const title = initialData ? 'Edit case' : 'Create case'
-  const description = initialData ? 'Edit case' : 'Add a new case'
-  const toastMessage = initialData ? 'Case updated.' : 'Case Created.'
+  const title = initialData ? 'Edit new' : 'Create new'
+  const description = initialData ? 'Edit new' : 'Add a new new'
+  const toastMessage = initialData ? 'New updated.' : 'New Created.'
   const action = initialData ? 'Save changes' : 'Create'
 
-  const form = useForm<CaseFormValues>({
+  const form = useForm<NewFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title_ch: initialData?.title_ch ?? '', // 如果是null或undefined，设置为空字符串
       title_en: initialData?.title_en ?? '',
-      case_categoryId: initialData?.case_categoryId ?? '',
+      newsCategoryId: initialData?.newsCategoryId ?? '',
       detail: initialData?.detail ?? ''
     }
   })
 
-  const onSubmit = async (data: CaseFormValues) => {
+  const onSubmit = async (data: NewFormValues) => {
     try {
       setLoading(true)
       if (initialData) {
-        await axios.patch(`/api/case-center/${params.caseId}`, data)
+        await axios.patch(`/api/news/${params.newId}`, data)
       } else {
-        await axios.post(`/api/case-center`, data)
+        await axios.post(`/api/news`, data)
       }
-      route.push(`/case-center`)
+      route.push(`/news`)
       route.refresh()
       toast.success(toastMessage)
     } catch (e) {
@@ -85,8 +85,8 @@ export const CaseForm = ({ initialData, detailsData }: CaseProps) => {
   const onDelete = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/case-center/${params.caseId}`)
-      route.push(`/case-center`)
+      await axios.delete(`/api/news/${params.newId}`)
+      route.push(`/news`)
       route.refresh()
       toast.success('nav successfully deleted')
     } catch (e) {
@@ -154,7 +154,7 @@ export const CaseForm = ({ initialData, detailsData }: CaseProps) => {
             />
             <FormField
               control={form.control}
-              name="case_categoryId"
+              name="newsCategoryId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>

@@ -6,34 +6,28 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react'
+import { Edit, MoreHorizontal, Trash } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { useState } from 'react'
 import { AlertModal } from '@/components/modals/alert-modal'
-import { ProductColum } from '@/app/(dashboard)/products/_components/columns'
+import { News } from '@prisma/client'
 
-export const CellAction = ({ data }: { data: ProductColum }) => {
+export const CellAction = ({ data }: { data: News }) => {
   const route = useRouter()
-  const params = useParams()
 
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
 
-  const onCopy = async (id: string) => {
-    await navigator.clipboard.writeText(id)
-    toast.success('Already Copy.')
-  }
-
   const onDelete = async () => {
     try {
       setLoading(true)
-      await axios.delete(`/api/${params.storeId}/products/${data.id}`)
+      await axios.delete(`/api/news/${data.id}`)
       route.refresh()
-      toast.success('product successfully deleted')
+      toast.success('Case successfully deleted')
     } catch (e) {
-      toast.error('Make sure you removed all categories first.')
+      toast.error('something went wrong.')
     } finally {
       setLoading(false)
       setOpen(false)
@@ -57,12 +51,7 @@ export const CellAction = ({ data }: { data: ProductColum }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align={'end'}>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => onCopy(data.id)}>
-            <Copy className={'mr-2 w-4 h-4'} /> Copy Id
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => route.push(`/${params.storeId}/products/${data.id}`)}
-          >
+          <DropdownMenuItem onClick={() => route.push(`/news/${data.id}`)}>
             <Edit className={'mr-2 w-4 h-4'} /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>

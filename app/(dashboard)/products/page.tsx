@@ -1,8 +1,8 @@
 import db from '@/lib/prismadb'
 import { format } from 'date-fns'
 import { formatter } from '@/lib/utils'
-import { ProductClient } from '@/app/(dashboard)/[storeId]/(routes)/products/_components/client'
-import { ProductColum } from '@/app/(dashboard)/[storeId]/(routes)/products/_components/columns'
+import { ProductColum } from '@/app/(dashboard)/products/_components/columns'
+import { ProductClient } from '@/app/(dashboard)/products/_components/client'
 
 const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
   const products = await db.product.findMany({
@@ -19,7 +19,7 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
     }
   })
 
-  const formattedProducts: ProductColum[] = products.map((product) => ({
+  const formattedProducts: ProductColum[] = products.map((product: any) => ({
     id: product.id,
     name: product.name,
     isFeatured: product.isFeatured,

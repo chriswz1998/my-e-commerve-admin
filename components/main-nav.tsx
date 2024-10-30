@@ -40,6 +40,11 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
       active: pathname === `/case-center`
     },
     {
+      href: `/news`,
+      label: 'News',
+      active: pathname === `/news`
+    },
+    {
       href: `/billboards`,
       label: 'Billboards',
       active: pathname === `/billboards`

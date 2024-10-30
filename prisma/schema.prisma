@@ -49,7 +49,7 @@ model Content {
   content_item ContentItem[] // 建立一对多关系，引用 ContentItem
 
   // 创建记录时间
-  createdAt DateTime @default(now())
+  createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
@@ -63,7 +63,7 @@ model ContentItem {
   contentId String // 外键，关联 Content 的 id
   content   Content @relation(fields: [contentId], references: [id]) // 关系字段
 
-  createdAt DateTime @default(now())
+  createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
@@ -72,7 +72,7 @@ model CaseCategory {
   name  String @unique // Category name, unique for each category
   cases Case[] // One-to-many relationship with Case
 
-  createdAt DateTime @default(now()) // Record creation timestamp
+  createAt  DateTime @default(now()) // Record creation timestamp
   updatedAt DateTime @updatedAt // Record update timestamp
 }
 
@@ -84,7 +84,28 @@ model Case {
   case_categoryId String // Foreign key for CaseCategory
   case_category   CaseCategory @relation(fields: [case_categoryId], references: [id])
 
-  createdAt DateTime @default(now()) // Record creation timestamp
+  createAt  DateTime @default(now()) // Record creation timestamp
+  updatedAt DateTime @updatedAt // Record update timestamp
+}
+
+model NewsCategory {
+  id        String @id @default(uuid()) // Primary key, UUID format
+  name      String @unique // Category name, unique for each category
+  newsItems News[] // One-to-many relationship with News
+
+  createAt  DateTime @default(now()) // Record creation timestamp
+  updatedAt DateTime @updatedAt // Record update timestamp
+}
+
+model News {
+  id             String       @id @default(uuid()) // Primary key, UUID format
+  title_ch       String // Title in Chinese
+  title_en       String // Title in English
+  detail         String       @db.Text // Detailed description
+  newsCategoryId String // Foreign key for NewsCategory
+  newsCategory   NewsCategory @relation(fields: [newsCategoryId], references: [id])
+
+  createAt  DateTime @default(now()) // Record creation timestamp
   updatedAt DateTime @updatedAt // Record update timestamp
 }
 
@@ -99,7 +120,6 @@ model Store {
   size       Size[]      @relation("StoreToSize")
   Color      Color[]     @relation("StoreToColor")
   Product    Product[]   @relation("StoreToProduct")
-  Order      Order[]     @relation("StoreToOrder")
 }
 
 model Billboard {
@@ -157,23 +177,22 @@ model Color {
 }
 
 model Product {
-  id         String      @id @default(uuid())
+  id         String   @id @default(uuid())
   storeId    String
-  store      Store       @relation("StoreToProduct", fields: [storeId], references: [id])
+  store      Store    @relation("StoreToProduct", fields: [storeId], references: [id])
   categoryId String
-  category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  category   Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name       String
   price      Decimal
-  isFeatured Boolean     @default(false)
-  isArchived Boolean     @default(false)
+  isFeatured Boolean  @default(false)
+  isArchived Boolean  @default(false)
   sizeId     String
-  size       Size        @relation(fields: [sizeId], references: [id])
+  size       Size     @relation(fields: [sizeId], references: [id])
   colorId    String
-  color      Color       @relation(fields: [colorId], references: [id])
+  color      Color    @relation(fields: [colorId], references: [id])
   images     Image[]
-  createAt   DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  OrderItems OrderItem[]
+  createAt   DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([storeId])
   @@index([categoryId])
@@ -192,27 +211,27 @@ model Image {
   @@index([productId])
 }
 
-model Order {
-  id         String      @id @default(uuid())
-  storeId    String
-  store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
-  isPaid     Boolean     @default(false)
-  phone      String
-  address    String      @default("")
-  createAt   DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  orderItems OrderItem[]
-
-  @@index([storeId])
+model LiscensOrder {
+  id        String   @id @default(uuid())
+  isPaid    Boolean  @default(false)
+  phone     String
+  wx        String
+  email     String
+  statusId  String
+  status    Status   @relation(fields: [statusId], references: [id])
+  price     Decimal
+  pic_1     String
+  pic_2     String
+  pic_3     String
+  pic_4     String
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model OrderItem {
-  id        String  @id @default(uuid())
-  Order     Order   @relation(fields: [orderId], references: [id])
-  orderId   String
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-
-  @@index([orderId])
-  @@index([productId])
+model Status {
+  id           String         @id @default(uuid())
+  name         String
+  createAt     DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  LiscensOrder LiscensOrder[]
 }

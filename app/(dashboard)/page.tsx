@@ -15,10 +15,10 @@ interface DashboardPageProps {
 }
 
 const DashboardPage: FC<DashboardPageProps> = async ({ params }) => {
-  const totalRevenue = await getTotalRevenue(params.storeId)
-  const salesCount = await getSalesCount(params.storeId)
-  const stockCount = await getStockCount(params.storeId)
-  const graphRevenue = await getGraphRevenue(params.storeId)
+  const totalRevenue = await getTotalRevenue()
+  const salesCount = await getSalesCount()
+  const stockCount = await getStockCount()
+  // const graphRevenue = await getGraphRevenue()
 
   return (
     <div className={'flex-col'}>
@@ -76,9 +76,7 @@ const DashboardPage: FC<DashboardPageProps> = async ({ params }) => {
           <CardHeader>
             <CardTitle className={'text-sm font-medium'}>Overview</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Overview data={graphRevenue} />
-          </CardContent>
+          <CardContent>{/*<Overview data={graphRevenue} />*/}</CardContent>
         </Card>
       </div>
     </div>
