@@ -43,7 +43,8 @@ const formSchema = z.object({
   description_ch: z.string().optional(),
   description_en: z.string().optional(),
   disable: z.boolean().optional(),
-  nav1Id: z.string().min(1)
+  nav1Id: z.string().min(1),
+  link: z.string().optional()
 })
 
 type Nav2FormValues = z.infer<typeof formSchema>
@@ -67,7 +68,8 @@ export const Nav2Form = ({ initialData, nav1 }: Nav2FormProps) => {
       disable: initialData?.disable ?? false, // 如果是null或undefined，设置为false
       description_ch: initialData?.description_ch ?? '',
       description_en: initialData?.description_en ?? '',
-      nav1Id: ''
+      nav1Id: '',
+      link: initialData?.link ?? ''
     }
   })
 

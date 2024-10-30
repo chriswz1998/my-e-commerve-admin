@@ -1,5 +1,5 @@
 import db from '@/lib/prismadb'
-import { ProductForm } from '@/app/(dashboard)/[storeId]/(routes)/products/[productId]/_components/product-form'
+import { ProductForm } from '@/app/(dashboard)/products/[productId]/_components/product-form'
 
 const ProductPage = async ({
   params

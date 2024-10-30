@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { Edit, MoreHorizontal, Trash } from 'lucide-react'
+import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -19,6 +19,11 @@ export const CellAction = ({ data }: { data: Nav2 }) => {
 
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
+
+  const onCopy = async (id: string) => {
+    await navigator.clipboard.writeText(id)
+    toast.success('Already Copy.')
+  }
 
   const onDelete = async () => {
     try {
@@ -51,9 +56,10 @@ export const CellAction = ({ data }: { data: Nav2 }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align={'end'}>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => route.push(`/nav2s/${data.id}`)}
-          >
+          <DropdownMenuItem onClick={() => onCopy(data.id)}>
+            <Copy className={'mr-2 w-4 h-4'} /> Copy Id
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => route.push(`/nav2s/${data.id}`)}>
             <Edit className={'mr-2 w-4 h-4'} /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>

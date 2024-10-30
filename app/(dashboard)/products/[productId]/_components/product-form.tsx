@@ -1,6 +1,5 @@
 'use client'
 
-import { Category, Color, Image, Product, Size } from '@prisma/client'
 import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
@@ -33,13 +32,6 @@ import {
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 
-interface ProductFormProps {
-  initialData: (Product & { images: Image[] }) | null
-  sizes: Size[]
-  colors: Color[]
-  categories: Category[]
-}
-
 const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array(),
@@ -58,7 +50,7 @@ export const ProductForm = ({
   categories,
   colors,
   sizes
-}: ProductFormProps) => {
+}: any) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const params = useParams()
@@ -231,13 +223,6 @@ export const ProductForm = ({
                           ></SelectValue>
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        {categories.map((item) => (
-                          <SelectItem value={item.id} key={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
                     </Select>
                   </FormControl>
                   <FormMessage />
@@ -265,13 +250,7 @@ export const ProductForm = ({
                           ></SelectValue>
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        {sizes.map((item) => (
-                          <SelectItem value={item.id} key={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
+                      <SelectContent></SelectContent>
                     </Select>
                   </FormControl>
                   <FormMessage />
@@ -299,13 +278,7 @@ export const ProductForm = ({
                           ></SelectValue>
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        {colors.map((item) => (
-                          <SelectItem value={item.id} key={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
+                      <SelectContent></SelectContent>
                     </Select>
                   </FormControl>
                   <FormMessage />

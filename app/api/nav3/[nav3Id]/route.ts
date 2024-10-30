@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
 import db from '@/lib/prismadb'
 
 export async function GET(
@@ -29,7 +28,6 @@ export async function PATCH(
 ) {
   try {
     console.log('1231231244')
-    const { userId } = auth()
     const body = await req.json()
     const { name_ch, name_en, disable, nav2Id, link } = body
 
@@ -41,8 +39,6 @@ export async function PATCH(
 
     if (!name_ch)
       return new NextResponse('name_ch is required', { status: 400 })
-
-    if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
     const nav_3 = await db.nav3.update({
       where: {
@@ -69,10 +65,6 @@ export async function DELETE(
   { params }: { params: { nav3Id: string } }
 ) {
   try {
-    const { userId } = auth()
-
-    if (!userId) return new NextResponse('Unauthorized', { status: 401 })
-
     if (!params.nav3Id)
       return new NextResponse('nav id is required', { status: 400 })
 

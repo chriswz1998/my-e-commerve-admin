@@ -7,9 +7,7 @@ const Nav4Page = async ({ params }: { params: { nav3Id: string } }) => {
       id: params.nav3Id
     }
   })
-
   const nav2 = await db.nav2.findMany()
-
   return (
     <div className={'flex-col'}>
       <div className={'p-6 space-y-6'}>

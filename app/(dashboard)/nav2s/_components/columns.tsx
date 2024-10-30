@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Nav2 } from '@prisma/client'
-import {CellAction} from "@/app/(dashboard)/nav2s/_components/cell-action";
+import { CellAction } from '@/app/(dashboard)/nav2s/_components/cell-action'
 export const columns: ColumnDef<Nav2 & { nav1: { name_ch: string } }>[] = [
   {
     accessorKey: 'name_ch',
@@ -30,6 +30,10 @@ export const columns: ColumnDef<Nav2 & { nav1: { name_ch: string } }>[] = [
   {
     accessorKey: 'disable',
     header: 'Disable'
+  },
+  {
+    accessorKey: 'link',
+    header: 'Link'
   },
   {
     id: 'actions',

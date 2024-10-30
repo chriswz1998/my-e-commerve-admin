@@ -24,19 +24,9 @@ model Nav2 {
   disable        Boolean? @default(false)
   description_ch String
   description_en String?
-  nav_3          Nav3[] // One-to-many relationship with Nav3
+  link           String? // optional link
   nav1Id         String
   nav1           Nav1     @relation(fields: [nav1Id], references: [id], onDelete: Cascade)
-}
-
-model Nav3 {
-  id      String   @id @default(uuid()) // 使用UUID作为ID
-  name_ch String
-  name_en String?
-  link    String? // optional link
-  disable Boolean? @default(false)
-  nav2Id  String
-  nav2    Nav2     @relation(fields: [nav2Id], references: [id], onDelete: Cascade)
 }
 
 model Content {
@@ -46,6 +36,7 @@ model Content {
   image_url    String
   desc_ch      String
   desc_en      String
+  is_connected Boolean
   content_item ContentItem[] // 建立一对多关系，引用 ContentItem
 
   // 创建记录时间

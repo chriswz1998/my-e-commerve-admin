@@ -68,6 +68,7 @@ export async function DELETE(
   { params }: { params: { contentId: string } }
 ) {
   try {
+    console.log(params.contentId)
     if (!params.contentId)
       return new NextResponse('content id is required', { status: 400 })
 
@@ -76,6 +77,8 @@ export async function DELETE(
         id: params.contentId
       }
     })
+
+    console.log(content)
 
     return NextResponse.json(content)
   } catch (e) {
