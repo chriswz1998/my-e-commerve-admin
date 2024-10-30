@@ -45,31 +45,6 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
       active: pathname === `/news`
     },
     {
-      href: `/billboards`,
-      label: 'Billboards',
-      active: pathname === `/billboards`
-    },
-    {
-      href: `/categories`,
-      label: 'Categories',
-      active: pathname === `/categories`
-    },
-    {
-      href: `/sizes`,
-      label: 'Sizes',
-      active: pathname === `/sizes`
-    },
-    {
-      href: `/colors`,
-      label: 'Colors',
-      active: pathname === `/colors`
-    },
-    {
-      href: `/products`,
-      label: 'Products',
-      active: pathname === `/products`
-    },
-    {
       href: `/orders`,
       label: 'Orders',
       active: pathname === `/orders`
