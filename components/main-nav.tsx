@@ -24,11 +24,6 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
       label: 'Navs_2',
       active: pathname === `/nav2s`
     },
-    // {
-    //   href: `/nav3s`,
-    //   label: 'Navs_3',
-    //   active: pathname === `/nav3s`
-    // },
     {
       href: `/contents`,
       label: 'Contents',

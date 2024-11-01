@@ -32,9 +32,17 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    const cases = await db.case.findMany()
+    const caseCategory = await db.caseCategory.findMany({
+      include: {
+        cases: {
+          select: {
+            title_ch: true // Only include `title_ch` field in `cases`
+          }
+        }
+      }
+    })
 
-    return NextResponse.json(cases)
+    return NextResponse.json(caseCategory)
   } catch (e) {
     console.log(`[case_get]`, e)
   }

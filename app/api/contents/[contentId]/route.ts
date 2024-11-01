@@ -12,6 +12,9 @@ export async function GET(
     const content = await db.content.findUnique({
       where: {
         id: params.contentId
+      },
+      include: {
+        content_item: true
       }
     })
 

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import db from '@/lib/prismadb'
 import Stripe from 'stripe'
 import { stripe } from '@/lib/stripe'
 
@@ -17,50 +16,21 @@ export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
-  const { productIds } = await req.json()
-  console.log('-----------------------------------------')
-  console.log(productIds)
-  console.log('-----------------------------------------')
-  if (!productIds || productIds.length === 0)
-    return new NextResponse('productId is required', { status: 400 })
+  const { liscensOrderId } = await req.json()
 
-  const products = await db.product.findMany({
-    where: {
-      id: {
-        in: productIds
-      }
-    }
-  })
+  if (!liscensOrderId)
+    return new NextResponse('productId is required', { status: 400 })
 
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = []
 
-  products.forEach((product) => {
-    line_items.push({
-      quantity: 1,
-      price_data: {
-        currency: 'CAD',
-        product_data: {
-          name: product.name
-        },
-        unit_amount: product.price.toNumber() * 100
-      }
-    })
-  })
-
-  const order = await db.order.create({
-    data: {
-      storeId: params.storeId,
-      isPaid: false,
-      phone: 'test',
-      orderItems: {
-        create: productIds.map((productId: string) => ({
-          product: {
-            connect: {
-              id: productId
-            }
-          }
-        }))
-      }
+  line_items.push({
+    quantity: 1,
+    price_data: {
+      currency: 'CAD',
+      product_data: {
+        name: '驾照翻译费用'
+      },
+      unit_amount: 0.5 * 100
     }
   })
 
@@ -68,13 +38,10 @@ export async function POST(
     line_items,
     mode: 'payment',
     billing_address_collection: 'required',
-    phone_number_collection: {
-      enabled: true
-    },
-    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?cancel=1`,
+    success_url: `${process.env.FRONTEND_STORE_URL}/immigrateTools/driveLicenseTranslate/${liscensOrderId}?success=1`,
+    cancel_url: `${process.env.FRONTEND_STORE_URL}/immigrateTools/driveLicenseTranslate/${liscensOrderId}?cancel=1`,
     metadata: {
-      orderId: order.id
+      orderId: liscensOrderId
     }
   })
 

@@ -1,6 +1,5 @@
 'use client'
 
-import { Store } from '@prisma/client'
 import { Heading } from '@/components/ui/heading'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
@@ -26,7 +25,7 @@ import { APIAlert } from '@/components/ui/api-alert'
 import { useOrigin } from '@/hooks/use-origin'
 
 interface SettingsFormProps {
-  initialData?: Store
+  initialData?: any
 }
 
 const formSchema = z.object({

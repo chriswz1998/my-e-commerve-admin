@@ -14,14 +14,14 @@ const OrderPage = async ({ params }: { params: { orderId: string } }) => {
   const status = await db.status.findMany()
 
   const formattedOrders: OrderColumn = {
-    id: order.id,
-    price: formatter.format(order.price.toNumber()),
-    createAt: format(order.createAt, 'MMMM do, yyyy'),
-    isPaid: order.isPaid,
-    phone: order.phone,
-    wx: order.wx,
-    email: order.email,
-    statusId: order.statusId
+    id: order?.id || '',
+    price: formatter.format(order?.price.toNumber() || 0),
+    createAt: format(order?.createAt || new Date(), 'MMMM do, yyyy'),
+    isPaid: order?.isPaid || false,
+    phone: order?.phone || '',
+    wx: order?.wx || '',
+    email: order?.email || '',
+    statusId: order?.statusId || ''
   }
   return (
     <div className={'flex-col'}>

@@ -1,11 +1,9 @@
-import React from 'react'
+import { ReactNode } from 'react'
 
-export default function AuthLayout({
-  children
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center justify-center h-full">{children}</div>
+    <div className={'w-full h-full flex items-center justify-center'}>
+      {children}
+    </div>
   )
 }

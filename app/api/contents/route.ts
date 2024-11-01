@@ -22,7 +22,8 @@ export async function POST(req: Request) {
         title_en,
         image_url,
         desc_ch,
-        desc_en
+        desc_en,
+        is_connected: false
       }
     })
 

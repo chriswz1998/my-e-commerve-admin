@@ -2,7 +2,6 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { CellAction } from '@/app/(dashboard)/orders/_components/cell-action'
-import { formatter } from '@/lib/utils'
 
 export interface OrderColumn {
   id: string

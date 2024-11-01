@@ -4,21 +4,15 @@ import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { CreditCard, DollarSign, Package } from 'lucide-react'
 import { formatter } from '@/lib/utils'
-import { getTotalRevenue } from '@/actions/get-total-revenue'
-import { getSalesCount } from '@/actions/get-sales-count'
-import { getStockCount } from '@/actions/get-stock-count'
-import Overview from '@/components/overview'
-import { getGraphRevenue } from '@/actions/get-graph-revenue'
 
 interface DashboardPageProps {
   params: { storeId: string }
 }
 
 const DashboardPage: FC<DashboardPageProps> = async ({ params }) => {
-  const totalRevenue = await getTotalRevenue()
-  const salesCount = await getSalesCount()
-  const stockCount = await getStockCount()
-  // const graphRevenue = await getGraphRevenue()
+  const totalRevenue = 1
+  const salesCount = 2
+  const stockCount = 3
 
   return (
     <div className={'flex-col'}>

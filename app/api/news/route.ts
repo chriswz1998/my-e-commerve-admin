@@ -32,7 +32,11 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    const news = await db.news.findMany()
+    const news = await db.newsCategory.findMany({
+      include: {
+        newsItems: true
+      }
+    })
 
     return NextResponse.json(news)
   } catch (e) {

@@ -23,7 +23,8 @@ const OrdersPage = async () => {
     phone: product.phone,
     wx: product.wx,
     email: product.email,
-    status: product.status.name
+    status: product.status.name,
+    statusId: product.statusId
   }))
 
   return (

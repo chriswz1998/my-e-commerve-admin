@@ -28,7 +28,7 @@ import { DataAction } from '@/app/(dashboard)/contents/[contentId]/_components/d
 
 interface ContentProps {
   initialData: Content | null
-  detailsData: ContentItem[] | null
+  detailsData: { id: string; title_ch: string; desc_ch: string }[] | null
 }
 
 const formSchema = z.object({

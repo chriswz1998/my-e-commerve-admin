@@ -106,6 +106,7 @@ model LiscensOrder {
   phone     String
   wx        String
   email     String
+  address   String
   statusId  String
   status    Status   @relation(fields: [statusId], references: [id])
   price     Decimal

@@ -14,7 +14,11 @@ import { useState } from 'react'
 import { AlertModal } from '@/components/modals/alert-modal'
 import { ContentItem } from '@prisma/client'
 
-export const DataAction = ({ data }: { data: ContentItem }) => {
+export const DataAction = ({
+  data
+}: {
+  data: { id: string; title_ch: string; desc_ch: string }
+}) => {
   const route = useRouter()
   const params = useParams()
 

@@ -34,30 +34,12 @@ export async function POST(req: Request) {
   const addressString = addressComponents.filter(Boolean).join(', ')
 
   if (event.type === 'checkout.session.completed') {
-    const order = await db.order.update({
+    await db.liscensOrder.update({
       where: {
         id: session?.metadata?.orderId
       },
       data: {
-        address: addressString,
-        isPaid: true,
-        phone: session?.customer_details?.phone || ''
-      },
-      include: {
-        orderItems: true
-      }
-    })
-
-    const productIds = order.orderItems.map((item) => item.productId)
-
-    await db.product.updateMany({
-      where: {
-        id: {
-          in: [...productIds]
-        }
-      },
-      data: {
-        isArchived: true
+        address: addressString
       }
     })
   }

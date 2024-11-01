@@ -6,7 +6,6 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { Store } from '@prisma/client'
 import { useStoreModal } from '@/hooks/use-store-modal'
 import { useParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -24,7 +23,7 @@ import {
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>
 interface StoreSwitcherProps extends PopoverTriggerProps {
-  items: Store[]
+  items: any[]
 }
 
 export default function StoreSwitcher({
