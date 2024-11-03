@@ -36,7 +36,9 @@ export async function GET(req: Request) {
       include: {
         cases: {
           select: {
-            title_ch: true // Only include `title_ch` field in `cases`
+            id: true,
+            title_ch: true,
+            createAt: true
           }
         }
       }

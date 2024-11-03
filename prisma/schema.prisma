@@ -125,3 +125,14 @@ model Status {
   updatedAt    DateTime       @updatedAt
   LiscensOrder LiscensOrder[]
 }
+
+model SnedInfo {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  email     String
+  message   String
+  common    String?
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

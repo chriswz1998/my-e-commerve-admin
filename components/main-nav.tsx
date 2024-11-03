@@ -45,6 +45,11 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
       active: pathname === `/orders`
     },
     {
+      href: `/messages`,
+      label: 'Message',
+      active: pathname === `/messages`
+    },
+    {
       href: `/settings`,
       label: 'Settings',
       active: pathname === `/settings`
