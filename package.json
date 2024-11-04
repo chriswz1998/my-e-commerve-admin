@@ -31,6 +31,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.408.0",
     "next": "14.2.10",
@@ -51,6 +52,7 @@
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/node": "^20.16.15",
     "@types/react": "^18",
     "@types/react-dom": "^18",
