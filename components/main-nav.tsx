@@ -50,6 +50,11 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
       active: pathname === `/messages`
     },
     {
+      href: `/COSC219`,
+      label: 'COSC219-Contact',
+      active: pathname === `/COSC219`
+    },
+    {
       href: `/settings`,
       label: 'Settings',
       active: pathname === `/settings`

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import db from '@/lib/prismadb'
-
 // 自定义 CORS 头
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*', // 或者指定具体的域
@@ -13,44 +12,26 @@ export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, { status: 204, headers: corsHeaders })
 }
 
-// 处理 POST 请求
-export async function POST(req: NextRequest) {
+export async function GET(
+  req: Request,
+  { params }: { params: { messagesId: string } }
+) {
   try {
-    const body = await req.json()
-    console.log(`[blog_post]`, body)
+    if (!params.messagesId)
+      return new NextResponse('case id is required', { status: 400 })
 
-    const { lastname, firstname, phone, email, message, service } = body
-
-    const isUnique = await db.blogMessage.findMany({
+    const message = await db.blogMessage.findUnique({
       where: {
-        email
+        id: params.messagesId
       }
     })
 
-    if (isUnique.length > 0) {
-      return new NextResponse(
-        JSON.stringify({ error: 'Email already exists' }),
-        { status: 400, headers: corsHeaders }
-      )
-    }
-
-    const blog = await db.blogMessage.create({
-      data: {
-        lastname,
-        firstname,
-        phone,
-        email,
-        message,
-        service
-      }
-    })
-
-    return new NextResponse(JSON.stringify(blog), {
+    return new NextResponse(JSON.stringify(message), {
       status: 200,
       headers: corsHeaders
     })
   } catch (e) {
-    console.log(`[blog_post]`, e)
+    console.log('[case_get]', e)
     return new NextResponse(
       JSON.stringify({ error: 'Internal Server Error' }),
       { status: 500, headers: corsHeaders }
